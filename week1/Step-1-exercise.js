@@ -28,3 +28,42 @@ checkType(x, y);
 let x = 7;
 x = x % 3;
 console.log(x); // 1
+
+// 7. Write a program to answer the following questions:
+// Can you store multiple types in an array? Numbers and strings?
+// Can you compare inifities? (Not in Eyad's world) - does 6/0 == 10/0? How can you test this?
+function arrayTypeCheck(array) {
+  type = [];
+  for (let element of array) {
+    if (!type.includes(typeof element)) {
+      type.push(typeof element);
+    }
+  }
+
+  if (type.length > 0) {
+    console.log("Yes, you can store different types in a array!");
+  }
+  else {
+    console.log("I'm afraid that you cannot store different types in a array");
+  }
+}
+
+function compareInfinity(x, y) {
+  let x1 = x / 0, y1 = y / 0;
+  if (x1 + y1 > 0 || x1 + y1 < 0) {
+    if (x1 == y1) {
+      console.log("Infinity or -Infinity equals to itself respectively.")
+    }
+    else {
+      console.log("Infinity or -Infinity are not comparable.")
+    }
+  }
+  else {
+    console.log("Infinity and -Infinity are not comparable.");
+  }
+}
+
+let arr = ["one", 1, ["ONE"]];
+arrayTypeCheck(arr); //Yes, you can store different types in a array!
+let x = 5, y = 10;
+compareInfinity(x, y); //Infinity or -Infinity equals to itself respectively.

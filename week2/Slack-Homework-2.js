@@ -186,3 +186,34 @@
   
   console.log(findLowest(students));
   console.log(findHighest(students));
+
+/*
+  2. Write a JavaScript program which iterates the integers from 1 to 1000. But for multiples of three print "Fizz" instead of the number and for the multiples of five print "Buzz". 
+  For numbers which are multiples of both three and five print "FizzBuzz".
+  */
+  function fizzBuzz() {
+    for (let i = 1; i <= 100; i++) {
+      let printOut = '';
+      
+      if (i % 3 === 0)
+        printOut += 'Fizz';
+      
+      if (i % 5 === 0)
+        printOut += 'Buzz';
+      
+      console.log(printOut + '\n');
+    }
+  }
+
+  fizzBuzz();
+
+/*
+  3. Write a JavaScript program to construct the following pattern, using a nested for loop. This might be bit of a challenge but read on nested for loop.
+
+  *
+  * *
+  * * *
+  * * * *
+  * * * * *
+  * * * * * *
+  */

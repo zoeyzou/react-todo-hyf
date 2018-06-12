@@ -217,3 +217,16 @@
   * * * * *
   * * * * * *
   */
+
+  function patternBuild(size) {
+    let pattern = '';
+    for (let x = 0; x < size; x++) {
+      for (let y = 0; y < x + 1; y++) {
+        pattern += '*';
+      }
+      pattern += '\n';
+    }
+    return pattern;
+  }
+
+  console.log(patternBuild(8));

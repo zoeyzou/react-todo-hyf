@@ -14,26 +14,32 @@
  */
 
  //create a function to calculate day
-function calculateDay(number) {
-  let n = number + dd;
+ 
+ 
+function calculateDay(inputDays, dayIndex, week) {
+  
+  const n =  dayIndex + inputDays;
 
-  if (n > 7) {
-    return week[n % 7];
-  }
-  else {
-    return week[n];
-  }
+  return week[n % 7];
+
 }
 
+const meetingDayButton = document.getElementById('meeting-day-button');
+meetingDayButton.addEventListener("click", () => {
+  const currentDate = new Date(); //get current date
+  const dayIndex = currentDate.getDay(); //get index
+  const week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday',
+  'Friday', 'Saturday']; //set week day array
+  
+  const inputDays = parseInt(document.getElementById('days-to-meet').value, 10);
+  const meetingDay = calculateDay(inputDays, dayIndex, week);
 
-let today = new Date(), //get current date
-    dd = today.getDay(), //get index
-    week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday',
-            'Friday', 'Saturday'], //set week day array
-    number = 9; //to give a meeting day
+  const text = `Today is ${week[dayIndex]}
+                The amount of days to meet: ${inputDays}
+                We are meeting on ${meetingDay}`;
+  // const textNode = document.createTextNode(text);
 
-calculateDay(number); //call the function
+  const textArea = document.getElementById('demo-area-1');
+  textArea.innerText = text;
+});
 
-console.log('Today is: ' + week[dd]);
-console.log('How many days to meet: ' + number);
-console.log("We are meeting on " + calculateDay(9));

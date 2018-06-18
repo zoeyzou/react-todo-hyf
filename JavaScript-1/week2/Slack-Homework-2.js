@@ -170,7 +170,7 @@
       if (students[i]['grade'] === students[0]['grade']) 
         student += `, ${students[i]['firstName']} ${students[i]['lastName']}`;
     }
-    return "Sadly you have to work harder, " + student + "!";
+    return student;
   }
   
   function findHighest(students) {
@@ -181,31 +181,47 @@
       if (students[i]['grade'] === students[0]['grade']) 
         student += `, ${students[i]['firstName']} ${students[i]['lastName']}`;
     }
-    return "Congratulations! You have done a good job, " + student + "!";
+    return student;
   }
   
-  console.log(findLowest(students));
-  console.log(findHighest(students));
+  const demoArea2 = document.getElementById('demo-area-2');
+  const goodStudent = findHighest(students);
+  const badStudent = findLowest(students);
+
+  const text = `Congrats! ${goodStudent} got the highest score! \n
+                Well, ${badStudent} need(s) to work harder!`;
+
+  demoArea2.innerText = text;
+  
 
 /*
   2. Write a JavaScript program which iterates the integers from 1 to 1000. But for multiples of three print "Fizz" instead of the number and for the multiples of five print "Buzz". 
   For numbers which are multiples of both three and five print "FizzBuzz".
   */
-  function fizzBuzz() {
-    for (let i = 1; i <= 100; i++) {
-      let printOut = '';
-      
-      if (i % 3 === 0)
-        printOut += 'Fizz';
-      
-      if (i % 5 === 0)
-        printOut += 'Buzz';
-      
-      console.log(printOut + '\n');
+  function fizzBuzz(max) {
+    let printOut = '';
+    for (let i = 1; i <= max; i++) {
+      if (i % 3 === 0 && i % 5 === 0)
+        printOut += 'FizzBuzz' + '\n'
+      else if (i % 5 === 0)
+        printOut += 'Buzz' + '\n';
+      else if (i % 3 === 0)
+        printOut += 'Fizz' + '\n';
+      else
+        printOut += i + '\n';
     }
+    return printOut;
   }
 
-  fizzBuzz();
+const fizzbuzzButton = document.getElementById('fizzbuzz-button');
+fizzbuzzButton.addEventListener('click', () => {
+  const fizzbuzzInput = document.getElementById('fizzbuzz-input').value;
+  const demoContent = fizzBuzz(fizzbuzzInput);
+
+  const demoArea3 = document.getElementById('demo-area-3');
+  demoArea3.innerText = demoContent;
+});
+
 
 /*
   3. Write a JavaScript program to construct the following pattern, using a nested for loop. This might be bit of a challenge but read on nested for loop.
@@ -229,4 +245,11 @@
     return pattern;
   }
 
-  console.log(patternBuild(8));
+  const wonderButton = document.getElementById('wonder-button');
+  wonderButton.addEventListener('click', () => {
+    const wonderInput = document.getElementById('wonder-input').value;
+    const demoContent = patternBuild(wonderInput);
+
+    const demoArea4 = document.getElementById('demo-area-4');
+    demoArea4.innerText = demoContent;
+  });

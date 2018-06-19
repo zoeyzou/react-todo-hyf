@@ -12,129 +12,100 @@
   declare winner. 
   */
 
-// class to create player
-class Player {
-  constructor(name, age, deck) {
-    this.name = name;
-    this.age = age;
-    this.winner = false;
-    this.cards = this.getCards(deck);
-  }
-  
-  getCards(deck) {
-    return deck.splice(0, 4);
-  } //method to deal cards to player
-
-  
-  getMostFrequentValue() {
-    const playerCards = sortCards(this);
-    
-    let value = playerCards[0].value;
-    
-    for (let i = 0; i < playerCards.length - 1; i++) {
-      if (playerCards[i+1].value === playerCards[i].value)
-        value = playerCards[i].value;  
-
-    }
-    
-    return value;
+class Game {
+  constructor () {
+    this.deck = this._shuffleDeck(this._createDeck()); 
+    this.players = this._getPlayersReady();
+    this.gameOver = false;
   }
 
-
-  checkForWin() {
-    let k = 0, q = 0, j = 0, a = 0; 
-
-    for(let i = 0; i < this.cards.length; i++) {
-      if (this.cards[i].value==="King"){
-        k++;
-      } else if (this.cards[i].value==="Queen") {
-        q++;
-      } else if (this.cards[i].value==="Jack") {
-        j++;
-      } else {
-        a++;
+  //create a deck with 16cards
+  _createDeck() {
+    const suits = ['Heart', 'Diamon', 'Spade', 'Club'];
+    const values = ['Jack', 'Queen', 'King', 'Ace'];
+    let deck = [];
+    for (let suit of suits) {
+      for (let value of values) {
+        let card = {
+          suit: suit,
+          value: value
+        }
+        deck.push(card);
       }
     }
+    return deck;
+  } 
 
-    if (k === 4 || q === 4 || j === 4 || a === 4) {
-      this.winner = true;
+  //shuffle the deck
+  _shuffleDeck(deck) {
+    for (let i = 0; i < deck.length; i++) {
+      let randomIdx = Math.trunc(Math.random() * deck.length);
+      let tmp = deck[randomIdx];
+      deck[randomIdx] = deck[i];
+      deck[i] = tmp;
     }
+    return deck;
   }
 
+  _getPlayersReady() {
+    let players = [];
+    const names = ['Jack', 'Rose', 'Luis', 'Dan'];
 
-}
-
-const suits = ['Heart', 'Diamon', 'Spade', 'Club'];
-const values = ['Jack', 'Queen', 'King', 'Ace'];
-const game = [];
-const deck = shuffleDeck(createDeck());
-
-let player01 = new Player('Jack', 25, deck),
-    player02 = new Player('Rose', 28, deck),
-    player03 = new Player('Luis', 36, deck),
-    player04 = new Player('Lily', 18, deck); //player created
-
-game.push(player01);
-game.push(player02);
-game.push(player03);
-game.push(player04); //game created;
-
-
-//create a deck with 16cards
-function createDeck() {
-  let deck = [];
-  for (let suit of suits) {
-    for (let value of values) {
-      let card = {
-        suit: suit,
-        value: value
+    for (let i = 0; i < 4; i++) {
+      let player = {
+        name: names[i],
+        age: Math.round(Math.random() * 60 + 18),//so it gives min 18 and max 78 of play age
+        cards: this.deck.splice(0,4),
       }
-      deck.push(card);
+      players.push(player);
     }
-  }
-  return deck;
-} 
 
-//shuffle the deck
-function shuffleDeck(deck) {
-  for (let i = 0; i < deck.length; i++) {
-    let randomIdx = Math.trunc(Math.random() * deck.length);
-    let tmp = deck[randomIdx];
-    deck[randomIdx] = deck[i];
-    deck[i] = tmp;
-  }
-  return deck;
-}
+    for (let player of players) {
+      player.frequentCards = this._getMostFrequentValuedCards(player.cards);
+    }
 
-//sort cards for player
-function sortCards(player) {
-  const cards = player.cards;
-  
-  cards.sort(function(a, b) {
-    const valueA = a.value;
-    const valueB = b.value; 
+    return players;
+  }
+
+  //sort cards for player
+  _sortCards(cards) {
     
-    if (valueA < valueB) {
-      return -1;
-    }
-  
-    if (valueA > valueB) {
-      return 1;
-    }
-
-    return 0;
-  });
-  
-  return cards;
-}
-
-function checkForValue(game) {
-  for (let i = 0; i < game.length; i++) {
-    
+    cards.sort(function(a, b) {
+      const valueA = a.value;
+      const valueB = b.value; 
+      
+      if (valueA < valueB) {
+        return -1;
+      }
+      if (valueA > valueB) {
+        return 1;
+      }
+      return 0;
+    });
+    return cards;
   }
-  const value = player.getMostFrequentValue();
+
+
+  _getMostFrequentValuedCards(cards) {
+    const sortedCards = this._sortCards(cards);
+    let value = sortedCards[0].value,
+        mostFrequentValuedCards = [];
+    
+    for (let i = 0; i < sortedCards.length - 1; i++) {
+      if (sortedCards[i+1].value === sortedCards[i].value)
+        value = sortedCards[i].value;  
+    }
+    
+    for (let card of cards) {
+      if (card.value === value) 
+        mostFrequentValuedCards.push(card);
+    }
+    return mostFrequentValuedCards;
+  }
 }
 
+let game = new Game();
+console.log(game);
 
 
 

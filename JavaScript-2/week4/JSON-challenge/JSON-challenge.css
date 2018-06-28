@@ -1,0 +1,62 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  width: 100%;
+  background: sandybrown;
+  top: 0;
+  margin-bottom: 10px;
+  position: fixed;
+}
+
+h1 {
+  text-transform: uppercase;
+  margin: 0;
+  padding: 10px;
+  text-align: center;
+}
+
+button {
+  font-size: 20px;
+  padding: 10px;
+  margin: 10px;
+  background: rgb(193, 221, 142);
+  cursor: pointer;
+}
+
+table {
+  display: none;
+  width: 80%;
+  border: 3px double rgb(136, 113, 113);
+  padding: 10px;
+  border-collapse: collapse;
+  margin: 80px auto 20px;
+  transition: all .5s ease-in;
+}
+
+td, th {
+  border: 1px solid #999;
+  padding: 0.5rem;
+}
+
+th {
+  text-align: center;
+}
+
+tr:nth-child(2n+1) {
+  background: rgb(207, 206, 206);
+}
+
+.title {
+  margin-top: 80px;
+  text-align: center;
+  transition: all .5s ease-in;
+}
+
+.t-head {
+  background: rebeccapurple !important;
+  color: white;
+}

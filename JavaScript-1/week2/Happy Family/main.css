@@ -1,0 +1,64 @@
+
+main {
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+div {
+  width: 180px;
+  height: 180px;
+  padding: 5px;
+  margin: 20px;
+  background: rgb(121, 211, 144);
+  border: 2px solid white;
+  border-radius: 5px;
+  transition: all .5s ease-in-out;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+h1 {
+  font-size: 22px;
+}
+
+h2 {
+  font-size: 16px;
+}
+
+button {
+  width: 100px;
+  height: 50px;
+  margin: 10px;
+}
+
+.flex {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.play-area {
+  align-items: center;
+  justify-content: center;
+}
+
+#play-button, #restart-button, #ask-card-button {
+  display: none;
+}
+
+.current-player {
+  background: rgb(130, 204, 96);
+}
+
+.player p {
+  font-size: 14px;
+  margin: 5px;
+  padding-left: 10px;
+}
+
+.asked-player {
+  background: rgb(211, 190, 121);
+}

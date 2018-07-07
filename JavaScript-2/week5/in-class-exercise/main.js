@@ -1,16 +1,17 @@
+const appendArea = document.querySelector('#append-area');
+
 /* Exercise 1 */
 let count = 0;
-document.querySelector('#count-up').addEventListener('click', countUp);
+document.querySelector('#count-up').addEventListener('click', function () {
+  countUp();
+  appendArea.innerHTML = count;
+});
 document.querySelector('#log-in').addEventListener('click', function() {
   delayLogin(notif, 5000);
 });
-document.querySelector('#successful-people').addEventListener('click', function () {
-  console.log(successfulPeople.people[0].name);
-});
 
 function countUp() {
-  console.log(count);
-  count += 1;
+  return count++;
 }
 
 function delayLogin(callback, time) {
@@ -18,20 +19,19 @@ function delayLogin(callback, time) {
 }
 
 function notif() {
-  console.log('Logged in 5 seconds');
+  appendArea.innerHTML = `<p>Logged in 5 seconds.</p>`;
 }
 
 /* Exercise 2 */
 document.addEventListener('DOMContentLoaded', domLoaded);
 
 function domLoaded() {
-  console.log('DOM fully loaded and parsed');
+  appendArea.innerHTML = `<p>DOM fully loaded and parsed.</p>`;
 }
 
-function showNames(obj) {
-  const names = obj.forEach(elem => {
-    
-  });
+function showData(objArray, prop) {
+  const data = objArray.map(elem => elem[prop]);
+  return data;
 }
 
 const url = 'http://api.open-notify.org/astros.json';
@@ -44,7 +44,6 @@ req.addEventListener('load', function (data) {
   // Check our server responsecode, 200 means ok, success: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes 
   if (this.status === 200) {
     successfulPeople = JSON.parse(req.responseText);
-    console.log(successfulPeople);
   } else {
     console.log('Something is probably wrong with the url');
   }
@@ -61,3 +60,16 @@ req.send();
 
 
 /* Exercise 3 */
+document.querySelector('#successful-people').addEventListener('click', function () {
+  const people = successfulPeople.people;
+  const names = showData(people, 'name');
+  const nameList = formContent(names);
+  const numberOfPeople = `<p>There are ${people.length} people who landed on the moon.</p>`;
+  appendArea.innerHTML = numberOfPeople + nameList;
+});
+
+function formContent(array) {
+  let content = '';
+  array.forEach(elem => content += `<p>${elem}</p>`);
+  return content;
+}

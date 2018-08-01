@@ -49,14 +49,33 @@
     <div class="row">
       <form class="col-xs-12 mx-auto form" id="repo-search-form">
           <h2 class="text-secondary">Wanna know more about HYF's curriculum? Check all or search!</h2>
-          <button type="button" class="btn btn-block btn-success long-button" id="all-repo-search-button">Check All Courses</button>
           <div class="input-group mb-3">
+            <div class="input-group-append">
+              <button class="btn btn-outline-success" type="button" name="search-all" id="all-repo-search-button">Check All Courses</button>
+            </div>
             <input type="text" class="form-control" name="repo-name" placeholder="Type in the course name" aria-label="movie name" aria-describedby="button-addon2">
             <div class="input-group-append">
               <button class="btn btn-info repo-search-button" type="submit" name="submit">Search Course</button>
             </div>
           </div>
       </form>
+    </div>
+    <hr>
+    <div class="row">
+      <form class="col-xs-12 mx-auto form" id="user-search-form">
+          <h2 class="text-secondary">Or maybe you want to find github people who have same or similar name?</h2>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" name="user-name" placeholder="Type in the user name" aria-label="user name" aria-describedby="button-addon2">
+            <div class="input-group-append">
+              <button class="btn btn-success user-search-button" type="submit" name="submit">Search Users</button>
+            </div>
+          </div>
+      </form>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 mx-auto">
+        <button class="btn btn-alert btn-block" id="clear-all-button">Clear All Results</button>
+      </div>
     </div>
     <!-- data demo area -->
     <div class="row" id="data-area">

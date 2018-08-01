@@ -17,38 +17,31 @@ movieForm.addEventListener('submit', event => {
 
   const url = getUrlByMovieName(userInput);
   getData(url, data => {
-    if (!data) {
-      dataArea.innerHTML = `
-        <div class="alert alert-danger mx-auto" role="alert">
-          Ops, the database says that your required data do not exist. Maybe Change the input?...
-        </div>`;
-      return false;
-    }
-    const movieList = data.Search;
-    showMovies(movieList, tbody, createMovieData);
+    validateData(data, dataArea);
+    showMovies(data.Search, tbody, createMovieData);
   });
 });
 
 // Event listener for course repo API fetch
 // Show all the course info
-const hyfUrl = 'https://api.github.com/orgs/HackYourFuture/repos';
-const searchAll = document.querySelector('#all-repo-search-button');
-searchAll.addEventListener('click', () => {
+const searchAllCourse = document.querySelector('#all-repo-search-button');
+searchAllCourse.addEventListener('click', () => {
   dataArea.innerHTML = '';
   const tbody = createTable(dataArea, 'Course Name', 'Contributors'); 
   
+  const hyfUrl = getUrlByRepo('');
   getData(hyfUrl, data => {
-    showData(data, tbody, createCourseData);
+    validateData(data.items.length, dataArea);
+    showData(data.items, tbody, renderCourseData);
   });
 });
 
 // Show the searched course repo
-const searchOne = document.querySelector('#repo-search-form');
-searchOne.addEventListener('submit', event => {
+const courseSearchWithInput = document.querySelector('#repo-search-form');
+courseSearchWithInput.addEventListener('submit', event => {
   event.preventDefault();
 
   const userInput = getUserInput('repo-name');
-
   //validate user input
   let isValid = checkUserInput(userInput, dataArea);
   if(!isValid) {
@@ -57,25 +50,38 @@ searchOne.addEventListener('submit', event => {
 
   //create table and tbody for accomodating data
   const tbody = createTable(dataArea, 'Course Name', 'Contributors'); 
-
-  const url = 'https://api.github.com/orgs/HackYourFuture/repos';
+ 
+  const url = getUrlByRepo(userInput);
   getData(url, data => {
-    let validData = [];
-    data.forEach(item => {
-      if(item.html_url.includes(userInput)) {
-        validData.push(item);
-      }
-    })
-    if (validData.length !== 0) {
-      showData(validData, tbody, createCourseData);
-    } else {
-      dataArea.innerHTML = `
-        <div class="alert alert-danger mx-auto" role="alert">
-          Ops, the database says that your required data do not exist. Maybe Change the input?...
-        </div>`;
-      return false;
-    }
+    validateData(data.items.length, dataArea);
+    showData(data.items, tbody, renderCourseData);
   })
+});
+
+// search for github people
+const userSearchForm = document.querySelector('#user-search-form');
+userSearchForm.addEventListener('submit', event => {
+  event.preventDefault();
+  const userInput = getUserInput('user-name');
+  
+  let isValid = checkUserInput(userInput, dataArea);
+  if(!isValid) {
+    return false;
+  }
+
+  const tbody = createTable(dataArea, 'Avatar', 'User Name', 'User Score', 'User Repo');
+  const url = getUrlByUserName(userInput);
+
+  getData(url, data => {
+    validateData(data.items.length, dataArea);
+    showData(data.items, tbody, renderUserData);
+  })
+});
+
+// Add a clear all button
+const clearAll = document.querySelector('#clear-all-button');
+clearAll.addEventListener('click', () => {
+  dataArea.innerHTML = '';
 });
 
 // User input control
@@ -99,16 +105,19 @@ function getUserInput(domId) {
 }
 
 // Get Url
-function getUrlByRepo(string) {
-  return `https://api.github.com/repos/HackYourFuture/${string}`;
+function getUrlByUserName(userInput) {
+  return `https://api.github.com/search/users?q=${userInput}`;
+}
+function getUrlByRepo(userInput) {
+  return `https://api.github.com/search/repositories?q=user:HackYourFuture-CPH+${userInput}`;
 }
 
-function getUrlByMovieName(string) {
-  return `http://www.omdbapi.com/?apikey=6d847b4e&type=movie&s=${string}&page=1`;
+function getUrlByMovieName(userInput) {
+  return `https://www.omdbapi.com/?apikey=6d847b4e&type=movie&s=${userInput}&page=1`;
 }
 
 function getUrlByMovieID(id) {
-  return `http://www.omdbapi.com/?apikey=6d847b4e&i=${id}`;
+  return `https://www.omdbapi.com/?apikey=6d847b4e&i=${id}`;
 }
 
 // Ajax call & validate data
@@ -132,27 +141,41 @@ function getData(url, callback) {
   xhr.send();
 }
 
+// Validate responded data
+function validateData(data, domElement) {
+  if (!data) {
+    domElement.innerHTML = `
+      <div class="alert alert-danger mx-auto" role="alert">
+        Oops, we could not find any search result based on your input. Please search with some other keywords.
+      </div>`;
+    return false;
+  }
+  return true;
+}
+
 // change DOM
 function createTable(dataArea, ...header) {
   const table = document.createElement('table');
   table.classList.add('table', 'table-hover', 'col-xs-12', 'mx-auto');
-  dataArea.appendChild(table);
-  table.innerHTML = `
-    <thead>
-      <tr>
-        <th scope="col">${header[0]}</th>
-        <th scope="col">${header[1]}</th>
-      </tr>
-    </thead>`;
+  const thead = document.createElement('thead');
+  const tr = document.createElement('tr');
+  let trContent = '';
+  header.forEach(title => {
+    trContent += `<th scope="col">${title}</th>`;
+  });
+  tr.innerHTML = trContent;
+  thead.appendChild(tr);
   const tbody = document.createElement('tbody');
+  table.appendChild(thead);
   table.appendChild(tbody);
+  dataArea.appendChild(table);
   return tbody;
 }
 
-function showData(data, DOMEl, callback) {
+function showData(data, domElement, callback) {
   data.forEach(element => {
     const tr = callback(element);
-    DOMEl.appendChild(tr);
+    domElement.appendChild(tr);
   });
 }
 
@@ -179,7 +202,7 @@ function createMovieData(element) {
     <td scope="col"><img style="width: 100px" src="${element.Poster}"></td>`;
 }
 
-function createCourseData(element) {
+function renderCourseData(element) {
   const tr = document.createElement('tr');
   const tdName = document.createElement('td');
   const url = getUrlByRepo(element.name);
@@ -192,6 +215,27 @@ function createCourseData(element) {
   tr.appendChild(tdName);
   tr.appendChild(tdContent);
   
+  return tr;
+}
+
+function renderUserData(element) {
+  // 'Avatar', 'User Name', 'User Score', 'User Repo'
+  const tr = document.createElement('tr');
+  const avatar = document.createElement('td');
+  const userName = document.createElement('td');
+  const userScore = document.createElement('td');
+  const userRepo = document.createElement('td');
+
+  avatar.innerHTML = `<img class="rounded" style="width: 100px" src=${element.avatar_url} alt=${element.login}>`;
+  userName.innerHTML = `<p>${element.login}</p>`;
+  userScore.innerHTML = `<p><span class="badge badge-pill badge-info">${element.score}</span></p>`;
+  userRepo.innerHTML = `<p><a href="${element.repos_url}" class="badge badge-light">Repo Link</a></p>`;
+
+  tr.appendChild(avatar);
+  tr.appendChild(userName);
+  tr.appendChild(userScore);
+  tr.appendChild(userRepo);
+
   return tr;
 }
 

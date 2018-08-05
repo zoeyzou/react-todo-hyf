@@ -36,18 +36,12 @@ movieButton.addEventListener('click', () => {
     const moviesAllTagged = renderCardInDom('All movies with tags based on their ratings', `Good (>= 7), Average (>= 4 and < 7), Bad (< 4)<br>Due to the enormous amount of data, please check console for result`);
     console.log(movieData.taggedMovies);
     // render count of matched movies
-    const matchedCount = renderCardInDom('Movies matched with any of the keywords', `Keywords: ["The", "dog", "who", "is", "not", "a", "man"] <br> Total count: ${movieData.matchedCount}`);
+    const matchedCount = renderCardInDom('Movies matched with any of the keywords', `Keywords: ["The", "dog", "who", "is", "not", "a", "man"] <br> Total count: ${movieData.totalMatch}`);
     // render count of movies produced in certain period
     const productionCount = renderCardInDom('Count movies produced between 1980-1989', `Total count: ${movieData.totalMoviesProducedInPeriod}`);
 
     movieArea.innerHTML = averageRating + tagCount + moviesAllTagged + matchedCount + productionCount;
   })
-
-
-
-
-  
-
 
 });
 
@@ -79,35 +73,6 @@ function getAjaxData(url, callback) {
   request.send();
 }
 
-// create a function that encapsulates all the required data request
-// function filterMovieData(jsonUrl) {
-//   const sortedMovieData = {};
-//   getAjaxData(jsonUrl, movieList => {
-//     // tag each movie according to its rating
-//     sortedMovieData.taggedMovies = rateMovies(movieList);
-//     // console.log('new movie data is as follow: ');
-//     // console.log(sortedMovieData.taggedMovies);
-
-//     //calculate the average rating
-//     sortedMovieData.averageRatingOfAll = getAverageMovieRating(movieList);
-//     // console.log('the average rating of all the movies is: ' + sortedMovieData.averageRatingOfAll);
-
-//     // count movie total with each tag
-//     sortedMovieData.eachTagCount = countEachMovieTag(movieList);
-//     // console.log('count of each tags: ');
-//     // console.log(sortedMovieData.eachTagCount);
-
-//     // check how many movies include given keywords
-//     sortedMovieData.totalMatch = countMoviesWithKeywords(movieList, ["The", "dog", "who", "is", "not", "a", "man"]);
-//     // console.log('totalMovieMatchToKeywords is ' + sortedMovieData.totalMatch);
-
-//     // count movies produced between 1980-1989
-//     sortedMovieData.totalMoviesProducedInPeriod = countMoviesByYear(movieList, 1980, 1989);
-//     // console.log('total Movies Produced In between 1980 to 1989: ' + sortedMovieData.totalMoviesProducedInPeriod);
-//   });
-  
-//   return sortedMovieData;
-// }
 function filterMovieData(movieList) {
   const sortedMovieData = {};
     // tag each movie according to its rating

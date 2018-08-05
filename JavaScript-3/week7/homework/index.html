@@ -5,9 +5,63 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>HFY-JS3-Week7-Homework</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
+  <style>
+    .topbar {
+      padding: 0;
+    }
+    .title {
+      vertical-align: middle;
+      display: inline-block;
+      padding-left: 20px;
+    }
+  </style>
 </head>
 <body>
+    <header class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 topbar">
+          <nav class="navbar navbar-light bg-light">
+            <a class="navbar-brand" href="#">
+              <img src="../../../logo.svg" height="50" class="d-inline-block" alt="">
+              <span class="title">HFY-JS3-Week7-Homework</span>
+            </a>
+          </nav>
+        </div>
+      </div>
+    </header>
+    <br>
+    <main class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 d-flex flex-column align-items-center">
+          <h3>Let's double the odd!</h3>
+          <p>Please type in only numbers, separate with ',' and NOTHING more</p>
+          <form class="form-inline" id="numbers-submit">
+            <div class="form-group mx-sm-3 mb-2">
+              <input type="text" class="form-control" name="arrayInput" placeholder="Type in some numbers" required>
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Submit the numbers</button>
+          </form>
+          <div class="showNumbers"></div>
+        </div>
+      </div>
+      <br>
+      <hr>
+
+      <div class="row">
+        <div class="col-md-12">
+          <button class="btn btn-info btn-block" id="movie-result">
+            See All Results
+          </button>
+        </div>
+      </div>
+      <br>
+      <div class="row movie-area">
+        
+      </div>
+    </main>
+
   <script src="script.js"></script>
 </body>
 </html>

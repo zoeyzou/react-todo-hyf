@@ -1,8 +1,8 @@
 const numbersSubmit = document.querySelector('#numbers-submit');
+const showArea = document.querySelector('.showNumbers');
 numbersSubmit.addEventListener('submit', event => {
   event.preventDefault();
 
-  const showArea = document.querySelector('.showNumbers');
   const formData = new FormData(event.target);
   const userInput = formData.get('arrayInput');
   const numberArray = convertStringArrayIntoNumberArray(userInput);
@@ -17,31 +17,35 @@ numbersSubmit.addEventListener('submit', event => {
   showArea.innerHTML = `The odd numbers being provided got doubled, here is the result: ${stringArray}`;
 });
 
+// getting all the movie data
+const jsonUrl = `https://gist.githubusercontent.com/pankaj28843/08f397fcea7c760a99206bcb0ae8d0a4/raw/02d8bc9ec9a73e463b13c44df77a87255def5ab9/movies.json`;
+let movieData;
+fetch(jsonUrl)
+  .then(data => data.json())
+  .then(movieList => movieData = movieList);
+
+const movieArea = document.querySelector('.movie-area');
 const movieButton = document.querySelector('#movie-result');
 movieButton.addEventListener('click', () => {
-  const jsonUrl = `https://gist.githubusercontent.com/pankaj28843/08f397fcea7c760a99206bcb0ae8d0a4/raw/02d8bc9ec9a73e463b13c44df77a87255def5ab9/movies.json`;
-  const movieArea = document.querySelector('.movie-area');
 
-  getAjaxData(jsonUrl, data => {
-    const movieData = filterMovieData(data);
-    // render the average rating
-    const averageRating = renderCardInDom('Average rating of all movies', movieData.averageRatingOfAll);
-    // render tag count of all
-    const tagContent = `
-      <p>Count of movies tagged as good: ${movieData.eachTagCount.good}</p>
-      <p>Count of movies tagged as average: ${movieData.eachTagCount.average}</p>
-      <p>Count of movies tagged as bad: ${movieData.eachTagCount.bad}</p>`;
-    const tagCount = renderCardInDom('The total count of each movie tag', tagContent);
-    // render all movies with tags
-    const moviesAllTagged = renderCardInDom('All movies with tags based on their ratings', `Good (>= 7), Average (>= 4 and < 7), Bad (< 4)<br>Due to the enormous amount of data, please check console for result`);
-    console.log(movieData.taggedMovies);
-    // render count of matched movies
-    const matchedCount = renderCardInDom('Movies matched with any of the keywords', `Keywords: ["The", "dog", "who", "is", "not", "a", "man"] <br> Total count: ${movieData.totalMatch}`);
-    // render count of movies produced in certain period
-    const productionCount = renderCardInDom('Count movies produced between 1980-1989', `Total count: ${movieData.totalMoviesProducedInPeriod}`);
+  const filteredMovieData = filterMovieData(movieData);
+  // render the average rating
+  const averageRating = renderCardInDom('Average rating of all movies', filteredMovieData.averageRatingOfAll);
+  // render tag count of all
+  const tagContent = `
+    <p>Count of movies tagged as good: ${filteredMovieData.eachTagCount.good}</p>
+    <p>Count of movies tagged as average: ${filteredMovieData.eachTagCount.average}</p>
+    <p>Count of movies tagged as bad: ${filteredMovieData.eachTagCount.bad}</p>`;
+  const tagCount = renderCardInDom('The total count of each movie tag', tagContent);
+  // render all movies with tags
+  const moviesAllTagged = renderCardInDom('All movies with tags based on their ratings', `Good (>= 7), Average (>= 4 and < 7), Bad (< 4)<br>Due to the enormous amount of data, please check console for result`);
+  console.log(filteredMovieData.taggedMovies);
+  // render count of matched movies
+  const matchedCount = renderCardInDom('Movies matched with any of the keywords', `Keywords: ["The", "dog", "who", "is", "not", "a", "man"] <br> Total count: ${filteredMovieData.totalMatch}`);
+  // render count of movies produced in certain period
+  const productionCount = renderCardInDom('Count movies produced between 1980-1989', `Total count: ${filteredMovieData.totalMoviesProducedInPeriod}`);
 
-    movieArea.innerHTML = averageRating + tagCount + moviesAllTagged + matchedCount + productionCount;
-  })
+  movieArea.innerHTML = averageRating + tagCount + moviesAllTagged + matchedCount + productionCount;
 
 });
 
@@ -76,26 +80,15 @@ function getAjaxData(url, callback) {
 function filterMovieData(movieList) {
   const sortedMovieData = {};
     // tag each movie according to its rating
-    sortedMovieData.taggedMovies = rateMovies(movieList);
-    // console.log('new movie data is as follow: ');
-    // console.log(sortedMovieData.taggedMovies);
-
+  sortedMovieData.taggedMovies = rateMovies(movieList);
     //calculate the average rating
-    sortedMovieData.averageRatingOfAll = getAverageMovieRating(movieList);
-    // console.log('the average rating of all the movies is: ' + sortedMovieData.averageRatingOfAll);
-
+  sortedMovieData.averageRatingOfAll = getAverageMovieRating(movieList);
     // count movie total with each tag
-    sortedMovieData.eachTagCount = countEachMovieTag(movieList);
-    // console.log('count of each tags: ');
-    // console.log(sortedMovieData.eachTagCount);
-
-    // check how many movies include given keywords
-    sortedMovieData.totalMatch = countMoviesWithKeywords(movieList, ["The", "dog", "who", "is", "not", "a", "man"]);
-    // console.log('totalMovieMatchToKeywords is ' + sortedMovieData.totalMatch);
-
-    // count movies produced between 1980-1989
-    sortedMovieData.totalMoviesProducedInPeriod = countMoviesByYear(movieList, 1980, 1989);
-    // console.log('total Movies Produced In between 1980 to 1989: ' + sortedMovieData.totalMoviesProducedInPeriod);
+  sortedMovieData.eachTagCount = countEachMovieTag(movieList);
+  // check how many movies include given keywords
+  sortedMovieData.totalMatch = countMoviesWithKeywords(movieList, ["The", "dog", "who", "is", "not", "a", "man"]);
+  // count movies produced between 1980-1989
+  sortedMovieData.totalMoviesProducedInPeriod = countMoviesByYear(movieList, 1980, 1989);
   
   return sortedMovieData;
 }

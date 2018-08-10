@@ -17,6 +17,7 @@ numbersSubmit.addEventListener('submit', event => {
   showArea.innerHTML = `The odd numbers being provided got doubled, here is the result: ${stringArray}`;
 });
 
+// step 1.2 create a function deals with the provided json
 // getting all the movie data
 const jsonUrl = `https://gist.githubusercontent.com/pankaj28843/08f397fcea7c760a99206bcb0ae8d0a4/raw/02d8bc9ec9a73e463b13c44df77a87255def5ab9/movies.json`;
 let movieData;
@@ -61,20 +62,6 @@ function doubleTheOdd(array) {
 
 function convertStringArrayIntoNumberArray(stringArray) {
   return stringArray.split(',').map(Number);
-}
-
-// step 1.2 create a function deals with the provided json
-// get data thru ajax
-function getAjaxData(url, callback) {
-  // Create new ajax call with the js function called XMLHttpRequest
-  const request = new XMLHttpRequest();
-  request.addEventListener('load', () => request.status === 200 ? 
-    callback(JSON.parse(request.responseText)) : console.log('Something is probably wrong with the url'));
-  request.addEventListener('error', () => console.log('Server error like timeout'));
-  // initializes a request with an http method
-  request.open("GET", url);
-  // Sends the request 
-  request.send();
 }
 
 function filterMovieData(movieList) {

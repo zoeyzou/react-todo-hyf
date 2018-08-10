@@ -10,9 +10,9 @@
   <style>
     .table-container {
       width: 800px;
-      height: 600px;
+      height: 450px;
       overflow-y: auto;
-      margin: 10px;
+      margin: 5px;
     }
     .table {
       width: 100%;
@@ -25,6 +25,12 @@
     .input-group {
       width: 800px;
       margin: 20px;
+    }
+
+    .explanation {
+      display: inline-block;
+      padding-right: 10px;
+      font-size: 1.2em;
     }
 
   </style>
@@ -50,6 +56,32 @@
       </div>
     </div>
     <div class="row">
+      <div class="col-xs-12 mx-auto">
+        <span class="explanation">Show movies: </span>
+        <div class="custom-control custom-radio custom-control-inline">
+          <input type="radio" id="all-movies" name="movies" class="custom-control-input" value="all" checked>
+          <label class="custom-control-label" for="all-movies">All</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+          <input type="radio" id="good-movies" name="movies" class="custom-control-input" value="Good">
+          <label class="custom-control-label" for="good-movies">Good</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+          <input type="radio" id="average-movies" name="movies" class="custom-control-input" value="Average">
+          <label class="custom-control-label" for="average-movies">Average</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+          <input type="radio" id="bad-movies" name="movies" class="custom-control-input" value="Bad">
+          <label class="custom-control-label" for="bad-movies">Bad</label>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 mx-auto">
+        <p class="result"></p>
+      </div>
+    </div>
+    <div class="row">
       <div class="col-xs-12 mx-auto table-container">
         <table class="table">
           <thead class="thead-dark thead">
@@ -58,7 +90,7 @@
               <th scope="col">Title</th>
               <th scope="col">Year</th>
               <th scope="col">Rating</th>
-              <th scope="col">Number of Votes</th>
+              <th scope="col">Votes</th>
               <th scope="col">Length</th>
               <th scope="col">Tag</th>
             </tr>
@@ -72,6 +104,6 @@
   </main>
 
   <script src="movie.js"></script>
-  <!-- <script src="script.js"></script> -->
+  <script src="script.js"></script>
 </body>
 </html>

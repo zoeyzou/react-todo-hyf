@@ -18,6 +18,7 @@ fetch(movieUrl)
     // click event to show all movies
     document.querySelector('#all-movie-button')
       .addEventListener('click', () => {
+        document.querySelector('#all-movies').checked = true;
         const userInput = document.querySelector('#user-input').value;
         let tableContent, result;
         
@@ -25,7 +26,7 @@ fetch(movieUrl)
           tableContent = renderMoviesInDom(movieList);
           result = renderResultInDom(movieList);
         } else {
-          const filteredMovieList = movieFactory.filterMoviesByKeyword(userInput);
+          filteredMovieList = movieFactory.filterMoviesByKeyword(userInput);
           tableContent = renderMoviesInDom(filteredMovieList);
           result = renderResultInDom(filteredMovieList);
         }

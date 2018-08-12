@@ -64,12 +64,9 @@ document.querySelectorAll('.custom-control-input')
 
   });
 
-
-
-
-
-
-
+/* -------------------------------------------------------------
+    functions
+  */
 
 function createMovieFactory(movieList) {
   return {
@@ -88,7 +85,23 @@ function createMovieFactory(movieList) {
     },
 
     filterMoviesByKeyword(keyword) {
-      return movieList.filter(movie => movie.title.includes(keyword));
+      return movieList.filter(movie => {
+        const keywordToLowerCase = keyword.toLowerCase();
+        if (keywordToLowerCase.split(' ').length > 1) {
+          return movie.title
+                  .split(' ')
+                  .map(word => word.toLowerCase())
+                  .join(' ')
+                  .includes(keywordToLowerCase);
+        }
+        const movieTitleLowerCase = 
+                movie.title
+                .split(' ')
+                .map(word => word.toLowerCase())
+                .join(' ');
+
+        return movieTitleLowerCase.includes(keywordToLowerCase);
+      });
     },
 
 
@@ -110,7 +123,7 @@ function renderMoviesInDom(movieList) {
         <td>${current.year}</td>
         <td>${current.rating}</td>
         <td>${current.votes}</td>
-        <td>${current.running_times}</td>
+        <td>${secondToHour(current.running_times)}h</td>
         <td>${current.tag}</td>
       </tr>
       `;
@@ -118,6 +131,10 @@ function renderMoviesInDom(movieList) {
     return accumulator;
   }, '');
   return tableContent;
+}
+
+function secondToHour(second) {
+  return (second / 3600).toFixed(1);
 }
 
 function renderResultInDom(movieList) {

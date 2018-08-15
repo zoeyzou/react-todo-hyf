@@ -32,6 +32,9 @@
       padding-right: 10px;
       font-size: 1.2em;
     }
+    .btn-light {
+      border: 1px solid grey;
+    }
 
   </style>
 </head>
@@ -45,37 +48,50 @@
     </nav>
   </header>
   <main class="container-fluid">
-    <div class="row">
-      <div class="col-xs-12 mx-auto">
-        <div class="input-group">
-          <input type="text" class="form-control" id="user-input" placeholder="Type to search; can't wait? click to see all" aria-label="See all the movies here">
-          <div class="input-group-append">
-            <button class="btn btn-outline-primary" type="button" id="all-movie-button">Search Movies</button>
+    <form class="search-form">
+      <div class="row">
+        <div class="col-xs-12 mx-auto">
+          <div class="input-group">
+            <input type="text" class="form-control" name="keywords" id="keywords" placeholder="Type to search movies" required>
+            <div class="input-group-append">
+              <select name="year" id="year" class="btn btn-light dropdown-toggle">
+                <option value="all" class="dropdown-item">All</option>
+                <option value="201" class="dropdown-item">2010 or newer</option>
+                <option value="200" class="dropdown-item">2000-2009</option>
+                <option value="199" class="dropdown-item">1990-1999</option>
+                <option value="198" class="dropdown-item">1980-1989</option>
+                <option value="197" class="dropdown-item">1970-1979</option>
+                <option value="196" class="dropdown-item">1960-1969</option>
+                <option value="195" class="dropdown-item">1950-1959</option>
+                <option value="100" class="dropdown-item">1949 or older</option>
+              </select>
+              <button class="btn btn-outline-primary" type="submit" id="all-movie-button">Search Movies</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12 mx-auto">
-        <span class="explanation">Show movies: </span>
-        <div class="custom-control custom-radio custom-control-inline">
-          <input type="radio" id="all-movies" name="movies" class="custom-control-input" value="all" checked>
-          <label class="custom-control-label" for="all-movies">All</label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline">
-          <input type="radio" id="good-movies" name="movies" class="custom-control-input" value="Good">
-          <label class="custom-control-label" for="good-movies">Good</label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline">
-          <input type="radio" id="average-movies" name="movies" class="custom-control-input" value="Average">
-          <label class="custom-control-label" for="average-movies">Average</label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline">
-          <input type="radio" id="bad-movies" name="movies" class="custom-control-input" value="Bad">
-          <label class="custom-control-label" for="bad-movies">Bad</label>
+      <div class="row">
+        <div class="col-xs-12 mx-auto">
+          <span class="explanation">Show movies: </span>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="all-movies" name="tag" class="custom-control-input" value="all" checked>
+            <label class="custom-control-label" for="all-movies">All</label>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="good-movies" name="tag" class="custom-control-input" value="Good">
+            <label class="custom-control-label" for="good-movies">Good</label>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="average-movies" name="tag" class="custom-control-input" value="Average">
+            <label class="custom-control-label" for="average-movies">Average</label>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="bad-movies" name="tag" class="custom-control-input" value="Bad">
+            <label class="custom-control-label" for="bad-movies">Bad</label>
+          </div>
         </div>
       </div>
-    </div>
+    </form>
     <div class="row">
       <div class="col-xs-12 mx-auto">
         <p class="result"></p>

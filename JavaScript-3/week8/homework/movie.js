@@ -116,7 +116,7 @@ fetch(movieUrl)
         const movieYear = form.get('year');
         const movieTag = form.get('tag');
 
-        let filteredMovieList = list;
+        let filteredMovieList = Movies.tagMovies(list);
 
         if (movieYear !== 'all') {
           filteredMovieList = Movies.filterByDecade(movieYear, filteredMovieList);

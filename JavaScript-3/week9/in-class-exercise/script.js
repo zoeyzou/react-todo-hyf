@@ -98,8 +98,8 @@ waitFor3SencondsPromise
     console.log('Another 3 seconds has passed');
     return Promise.all([githubPromise, redditPromise]);
   })
-  .then((data) => {
-    return data.json();
+  .then((responses) => {
+    return Promise.all(responses.map(response => response.json()));
   })
   .then((list) => {
     console.log(list);

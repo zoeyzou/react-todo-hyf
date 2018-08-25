@@ -124,6 +124,20 @@ const QUIZ = {
     return inputs;
   },
 
+  setTimerOnDifficulty(difficulty) {
+    if (difficulty === 'easy') {
+      QUIZ.initialTimer = 5;
+      QUIZ.currentTimer = 5;
+    } else if (difficulty === 'medium') {
+      QUIZ.initialTimer = 10;
+      QUIZ.currentTimer = 10;
+    } else {
+      QUIZ.initialTimer = 15;
+      QUIZ.currentTimer = 15;
+    }
+  }
+,
+
   initiateQuiz: () => {
     const difficulty = DOM.quizForm.elements[0].value;
     const category = DOM.quizForm.elements[1].value;
@@ -132,6 +146,7 @@ const QUIZ = {
     
     API.quizUrl = `https://opentdb.com/api.php?amount=${quantity}&category=${categoryId}&difficulty=${difficulty}&type=multiple`;
 
+    QUIZ.setTimerOnDifficulty(difficulty);
     DOM.quizForm.style.display = 'none';
     DOM.loader.style.display = 'block';
   },

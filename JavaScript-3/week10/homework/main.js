@@ -172,7 +172,7 @@ const QUIZ = {
   },
 
   startNextQuestion: () => {
-    if (QUIZ.crtQuestionIndex === QUIZ.questions.length -1) {
+    if (QUIZ.crtQuestionIndex > QUIZ.questions.length -1) {
       return DOM.renderScore(QUIZ.score, 100, DOM.quizQuestionUl);
     }
     DOM.renderSingleQuiz(QUIZ.questions[QUIZ.crtQuestionIndex], DOM.quizQuestionUl);

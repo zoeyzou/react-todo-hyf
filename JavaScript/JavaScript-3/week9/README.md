@@ -3,7 +3,7 @@ This repo is composed by two folders, of which one is the in-class exercise and 
 
 Each folder has its own .js and .html file. The preview link is as below:
 
-https://zoeyzou.github.io/hyf-homework/JavaScript-3/week9/homework/index.html
+https://zoeyzou.github.io/hyf-homework/JavaScript/JavaScript-3/week9/homework/index.html
 
 # Learning Target
 The key points of this week's study is more about promise, e.g. `Promise.all`; also covered more about `this` keyword and how to determine what `this` points to under below circumstances:

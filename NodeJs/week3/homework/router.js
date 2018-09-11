@@ -48,6 +48,7 @@ class Router {
 
   dispatch(req, res) {
     this.handleServerError(req, res);
+    console.log(req.method);
 
     const reqUrl = url.parse(req.url, true);
     const hasPath = this.routes.some(route => route.method === req.method && route.path === reqUrl.pathname);

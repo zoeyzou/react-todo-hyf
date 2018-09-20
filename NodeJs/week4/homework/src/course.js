@@ -13,56 +13,54 @@ class Course {
 
 }
 
-/**
- * @param {Course} course instance of course
- */
-class CourseList {
-  constructor(course) {
-    if (!(course instanceof Course)) throw new Error('New course should be an instance of Course class.');
-    this._courses = [course];
-  }
+// /**
+//  * @param {Course} course instance of course
+//  */
+// class CourseList {
+//   constructor(api) {
+//     this.api = api;
+//   }
 
-  get courses() {
-    return this._courses;
-  }
+//   async getAllCourses() {
+//     const courses = await this.api.getCoursesPromise();
+//     console.log(courses);
+//     console.log(typeof courses);
+//     return courses;
+//   }
 
-  getAllCourses() {
-    return this._courses;
-  }
+//   getCourseById(id) {
+//     if (!this._courses[id]) throw new Error('Course with this id does not exist.');
+//     return this._courses[id];
+//   }
 
-  getCourseById(id) {
-    if (!this._courses[id]) throw new Error('Course with this id does not exist.');
-    return this._courses[id];
-  }
+//   addCourse(course) {
+//     if (!(course instanceof Course)) throw new Error('New course should be an instance of Course class.');
+//     this._courses.push(course);
+//     return this._courses;
+//   }
 
-  addCourse(course) {
-    if (!(course instanceof Course)) throw new Error('New course should be an instance of Course class.');
-    this._courses.push(course);
-    return this._courses;
-  }
+//   deleteCourse(id) {
+//     if (this._courses[id]) {
+//       this._courses.splice(id, 1);
+//       return this._courses;
+//     } else {
+//       throw new Error('This id does not exist in course list.');
+//     }
+//   }
 
-  deleteCourse(id) {
-    if (this._courses[id]) {
-      this._courses.splice(id, 1);
-      return this._courses;
-    } else {
-      throw new Error('This id does not exist in course list.');
-    }
-  }
+//   /**
+//    * 
+//    * @param {number} id index number
+//    * @param {object} editEntry an object to patch the course
+//    */
+//   editCourse(id, editEntry) {
+//     if (this._courses[id]) {
+//       this._courses[id] = {...this._courses[id], ...editEntry};
+//       return this._courses[id];
+//     } else {
+//       throw new Error('This id does not exist in course list.');
+//     }
+//   }
+// }
 
-  /**
-   * 
-   * @param {number} id index number
-   * @param {object} editEntry an object to patch the course
-   */
-  editCourse(id, editEntry) {
-    if (this._courses[id]) {
-      this._courses[id] = {...this._courses[id], ...editEntry};
-      return this._courses[id];
-    } else {
-      throw new Error('This id does not exist in course list.');
-    }
-  }
-}
-
-module.exports = { Course, CourseList };
+module.exports = { Course };

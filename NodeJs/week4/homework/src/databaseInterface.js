@@ -1,5 +1,6 @@
 const util = require('util');
 const fs = require('fs');
+const unionBy = require('lodash.unionby')
 
 const readFile = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
@@ -11,66 +12,60 @@ class DatabaseInterface {
    * @param {string} path local json database file path
    */
   constructor(path) {
-    this.filePath = __dirname + path;
+    this.filePath = path;
   }
 
-  getCoursesPromise() {
-    return readFile(this.filePath, 'utf8')
-      .then(res => {
-        return JSON.parse(res);
-      })
-      .catch(err => console.log(err));
+  async getCoursesPromise() {
+    const fileContent = await readFile(this.filePath, 'utf8');
+    return JSON.parse(fileContent);
   }
+
+  async getCourseByIdPromise(id) {
+    const fileContent = await readFile(this.filePath, 'utf8');
+    return (JSON.parse(fileContent))[id];
+  }
+
   /**
    * 
-   * @param {Course} course instance of Course Class
+   * @param {array, Course} newCourse instance of Course Class or array of Course instances
    */
-  postSingleCoursePromise(course) {
-    return this.getCoursesPromise()
-      .then(courses => {
-        if (courses.some(item => item.name === course.name)) {
-          throw new Error('This course exists in database, please use edit if you want to change it.');
-        }
-
-        courses.push(course);
-        return writeFile(this.filePath, JSON.stringify(courses), 'utf8');
-      })
-      .then(data => this.getCoursesPromise())
-      .catch(err => console.log(err));
+  async postCoursesPromise(newCourses) {
+    let courses = await this.getCoursesPromise();
+    if (Array.isArray(newCourses)) {
+      courses = unionBy(newCourses, courses, 'name');
+      // merge and unique course items
+    } else {
+      courses.push(newCourses);
+    }
+    await writeFile(this.filePath, JSON.stringify(courses), 'utf8');
+    return this.getCoursesPromise();
   }
 
-  postMultipleCoursesPromise(courses) {
-    return this.getCoursesPromise()
-      .then(allCourses => {
-        allCourses = [...allCourses, ...courses];
-        return writeFile(this.filePath, JSON.stringify(courses), 'utf8');
-      })
-      .then(data => this.getCoursesPromise())
-      .catch(err => console.log(err));
+  async editCoursePromise(id, dataEntry) {
+    const courses = await this.getCoursesPromise();
+    if (!courses[id]) throw new Error('This id does not exist in course list.');
+    courses[id] = {...courses[id], ...dataEntry};
+    return this.postCoursesPromise(courses);
   }
 
-  editCoursePromise(id, dataEntry) {
-    return this.getCoursesPromise()
-      .then(courses => {
-        if (!courses[id]) throw new Error('This id does not exist in course list.');
-        courses[id] = {...courses[id], ...dataEntry};
-        return this.postMultipleCoursesPromise(courses);
-      })
-      .catch(err => console.log(err));
-  }
-
-  deleteCoursePromise(id) {
-    return this.getCoursesPromise()
-      .then(courses => {
-        if (!courses[id]) throw new Error('This id does not exist in course list.');
-        courses.splice(id, 1);
-        return this.postMultipleCoursesPromise(courses);
-      })
-      .catch(err => console.log(err));
+  async deleteCoursePromise(id) {
+    const courses = await this.getCoursesPromise();
+    if (id !== null) {
+      if (!courses[id]) throw new Error('This id does not exist in course list.');
+      courses.splice(id, 1);
+    } else {
+      courses.pop();
+    }
+    await writeFile(this.filePath, JSON.stringify(courses), 'utf8');
+    return this.getCoursesPromise();
   }
 }
 
 module.exports = DatabaseInterface;
-// console.log(__dirname);
-// const db = new DatabaseInterface(__dirname + '/db.json');
-// db.deleteCoursePromise(0).then(res => console.log(JSON.stringify(res)));
+console.log(__dirname);
+const db = new DatabaseInterface(__dirname + '/db.json');
+// db.getCoursesPromise().then(res => console.log(JSON.stringify(res)));
+// db.getCourses().then(res => console.log(res));
+// db.postCoursesPromise2({name: "Physics", difficulty: 5}).then(res => console.log(res));
+// db.editCourse(4, {difficulty: 1}).then(res => console.log(res));
+// db.deleteCourse(0).then(res => console.log(res));

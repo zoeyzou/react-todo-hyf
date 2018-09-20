@@ -1,37 +1,47 @@
 const { Router } = require('express');
-const { Course, CourseList } = require('./course');
+const { Course } = require('./course');
+const DbInterface = require('./databaseInterface');
 
-const courses = new CourseList(new Course('HTML', 3));
+const courseAPI = new DbInterface(__dirname + '/db.json');
+// const courses = new CourseList(courseAPI);
 
 const courseRoute = Router()
-  .get('/', (req, res) => {
-    res.send(courses.getAllCourses());
-  })
-  .get('/:id', (req, res) => {
+  .get('/', async (req, res) => {
     try {
-      res.send(courses.getCourseById(req.params.id))
+      res.send(await courseAPI.getCoursesPromise())
+    } catch(error) {
+      next(error)
+    }
+  })
+  .get('/:id', async (req, res) => {
+    try {
+      res.send(await courseAPI.getCourseByIdPromise(req.params.id));
     } catch (error) {
       res.status(404).end('The course with this id does not exist.')
     }
   })
-  .post('/', (req, res) => {
+  .post('/', async (req, res) => {
     try {
+      if (!req.body.name || !req.body.difficulty) {
+        res.send('The name and difficulty are needed to create and post a course.');
+        throw new Error('The name and difficulty are needed to create and post a course.');
+      }
       const newCourse = new Course(req.body.name, req.body.difficulty);
-      res.send(courses.addCourse(newCourse));
+      res.send(await courseAPI.postCoursesPromise(newCourse));
     } catch(error) {
       res.status(403).end(error);
     }
   })
-  .patch('/:id', (req, res) => {
+  .patch('/:id', async (req, res) => {
     try {
-      res.send(courses.editCourse(req.params.id, req.body));
+      res.send(await courseAPI.editCoursePromise(req.params.id, req.body));
     } catch(error) {
       res.status(403).end('The id does not exists');
     }
   })
-  .delete('/:id', (req, res) => {
+  .delete('/:id', async (req, res) => {
     try {
-      res.send(courses.deleteCourse(req.params.id));
+      res.send(await courseAPI.deleteCoursePromise(req.params.id));
     } catch(error) {
       res.status(404).end('The id does not exist');
     }

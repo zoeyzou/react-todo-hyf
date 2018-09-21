@@ -3,12 +3,14 @@
  * @param {number} difficulty number
  */
 class Course {
-  constructor(name, difficulty) {
+  constructor(name, difficulty, fun) {
     if (name === null || typeof name !== 'string') throw new Error('Course name should be a string');
     if (difficulty === null || typeof difficulty !== 'number') throw new Error('Course difficulty should be a number');
+    if (fun === null || typeof fun !== 'number') throw new Error('Course difficulty should be a number');
 
     this.name = name;
     this.difficulty = difficulty;
+    this.fun = fun;
   }
 
 }

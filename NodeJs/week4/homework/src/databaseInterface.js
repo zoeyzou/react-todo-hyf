@@ -59,6 +59,35 @@ class DatabaseInterface {
     await writeFile(this.filePath, JSON.stringify(courses), 'utf8');
     return this.getCoursesPromise();
   }
+
+  async getCoursesByQueryPromise({...queries}) {
+    let courses = await this.getCoursesPromise();
+    const keys = Object.keys(queries);
+
+    if (keys.includes('name')) {
+      courses = courses.filter(course => {
+        console.log(course.name);
+        return course['name'].toLowerCase() === queries['name'].toLowerCase()
+      });
+    }
+    if (keys.includes('difficulty')) {
+      courses = courses.filter(course => Number(course['difficulty']) === Number((queries['difficulty'])));
+    }
+    if (keys.includes('fun')) {
+      courses = courses.filter(course => Number(course['fun']) === Number(queries['fun']));
+    }
+    if (courses.length === 0) {
+      return 'There is not matching course in the database, please query for something else.';
+    }
+    return courses;
+  }
+
+  validateQueryByCourseContent({...queries}) {
+    const courseKeys = ['name', 'difficulty', 'fun'];
+    return Object.keys(queries).some(query => {
+      return courseKeys.some(key => key === query);
+    })
+  }
 }
 
 module.exports = DatabaseInterface;

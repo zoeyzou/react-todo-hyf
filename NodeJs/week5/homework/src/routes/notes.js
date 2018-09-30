@@ -9,6 +9,12 @@ const notes = new Notes(notesPath);
 const notesRouter = express.Router();
 
 notesRouter.get('/', (req, res) => {
+  if (Object.keys(req.query).length !== 0) {
+    if (!Object.keys(req.query).includes('tags')) {
+      return res.status(400).send('request should include note tags');
+    }
+    return res.status(200).send(notes.getNotesByTags(req.query.tags));
+  }
   res.status(200).send(notes.getNotes());
 });
 
@@ -21,7 +27,7 @@ notesRouter.post('/', (req, res) => {
     if (!body.title || typeof body.title !== 'string') {
       return res.status(400).end('Posted note should have string title');
     }
-    const addedNote = new Note(body.title, body.content, body.tags || []);
+    const addedNote = new Note(body.title, body.content || '', body.tags || []);
     addedNote.id = Date.now();
     const newNote = notes.postNotes(addedNote);
     res.status(200).send(newNote);

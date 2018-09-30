@@ -3,13 +3,11 @@ const form = document.querySelector('#noteForm');
 const filter = document.querySelector('#filter');
 const filters = document.querySelectorAll('.filter');
 const display = document.querySelector('#notes');
-let notes = null;
 let tags = [];
 
 window.addEventListener('load', event => {
   getNotes(baseUrl)
     .then(res => {
-      notes = res;
       const table = createNoteTable(res);
       display.innerHTML = table;
     });
@@ -24,7 +22,6 @@ form.addEventListener('submit', event => {
 
   postNotes(baseUrl, data)
     .then(res => {
-      notes = res;
       const sortedNotes = filterNotesByTags(tags, res);
       const table = createNoteTable(sortedNotes);
       display.innerHTML = table;
@@ -40,9 +37,14 @@ filter.addEventListener('click', (event) => {
     } else {
       tags = tags.filter(tag => tag !== event.target.value);
     }
-    const sortedNotes = filterNotesByTags(tags, notes);
-    const table = createNoteTable(sortedNotes);
-    display.innerHTML = table;
+    const query = tags.map(tag => `tags=${tag}`).join('&') || '';
+    const url = !tags.length ? baseUrl : `${baseUrl}?${query}`;
+    getNotes(url)
+      .then(res => {
+        console.log(res);
+        const table = createNoteTable(res);
+        display.innerHTML = table;
+      });
   }
 });
 
@@ -51,7 +53,6 @@ display.addEventListener('click', (event) => {
     const id = event.target.id;
     deleteNotes(baseUrl, id)
       .then(res => {
-        notes = res;
         const sortedNotes = filterNotesByTags(tags, res);
         const table = createNoteTable(sortedNotes);
         display.innerHTML = table;
@@ -62,16 +63,6 @@ display.addEventListener('click', (event) => {
 
 function initiateFilter(filters) {
   filters.forEach(filter => filter.checked = false);
-}
-
-function filterNotesByTags(tags, notes) {
-  if (!tags.length) return notes;
-  notes.filter(note => {
-    if (!note.tags.length || tags.length === note.tags.length) return false;
-    const sortedNoteTags = note.tags.sort((a,b) => a < b);
-    const sortedTags = tags.sort((a,b) => a < b);
-    return sortedTags.every((value, index) => value === sortedNoteTags[index]);
-  })
 }
 
 function createNoteTable(notes) {

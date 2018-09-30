@@ -22,8 +22,7 @@ form.addEventListener('submit', event => {
 
   postNotes(baseUrl, data)
     .then(res => {
-      const sortedNotes = filterNotesByTags(tags, res);
-      const table = createNoteTable(sortedNotes);
+      const table = createNoteTable(res);
       display.innerHTML = table;
       form.reset();
       initiateFilter(filters);
@@ -51,10 +50,10 @@ filter.addEventListener('click', (event) => {
 display.addEventListener('click', (event) => {
   if (event.target.classList.contains('btn-delete')) {
     const id = event.target.id;
+    console.log(id);
     deleteNotes(baseUrl, id)
       .then(res => {
-        const sortedNotes = filterNotesByTags(tags, res);
-        const table = createNoteTable(sortedNotes);
+        const table = createNoteTable(res);
         display.innerHTML = table;
       })
   }

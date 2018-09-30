@@ -46,7 +46,7 @@ class Notes {
   }
 
   deleteNotes(id) {
-    const index = this._notes.findIndex(note => note.id === id);
+    const index = this._notes.findIndex(note =>  note.id == id);
     this._notes.splice(index, 1);
     this.writeNotesToDB(this._notes);
     return this._notes;

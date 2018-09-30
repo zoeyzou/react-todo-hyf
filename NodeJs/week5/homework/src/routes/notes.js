@@ -8,26 +8,10 @@ const notes = new Notes(notesPath);
 
 const notesRouter = express.Router();
 
-// notesRouter.get('/', (req, res) => {
-//   notes.getNotes()
-//     .then(data => res.status(200).send(data))
-//     .catch(err => res.status(400).end(err));
-// });
 notesRouter.get('/', (req, res) => {
   res.status(200).send(notes.getNotes());
 });
 
-// notesRouter.post('/', (req, res) => {
-//   const newNotes = req.body.map(body => {
-//     if (!body.title || typeof body.title !== 'string') {
-//       throw new Error('Request should include body title as a string');
-//     }
-//     return new Note(body.title, body.content, body.tags || []);
-//   });
-//   notes.postNotes(newNotes)
-//     .then(data => res.status(200).send(data))
-//     .catch(err => res.status(400).end(err));
-// });
 notesRouter.post('/', (req, res) => {
   let body = [];
   req.on('data', (chunk) => {
@@ -37,19 +21,14 @@ notesRouter.post('/', (req, res) => {
     if (!body.title || typeof body.title !== 'string') {
       return res.status(400).end('Posted note should have string title');
     }
-    const addedNotes = new Note(body.title, body.content, body.tags || []);
-    const newNotes = notes.postNotes(addedNotes);
-    res.status(200).send(newNotes);
+    const addedNote = new Note(body.title, body.content, body.tags || []);
+    addedNote.id = Date.now();
+    const newNote = notes.postNotes(addedNote);
+    res.status(200).send(newNote);
   })
 
 });
 
-// notesRouter.patch('/:id', (req, res) => {
-//   const id = req.params.id;
-//   notes.editNotes(id, req.body)
-//     .then(data => res.status(200).send(data))
-//     .catch(err => res.status(400).end(err.toString()));
-// });
 notesRouter.patch('/:id', (req, res) => {
   let body = [];
   req.on('data', (chunk) => {

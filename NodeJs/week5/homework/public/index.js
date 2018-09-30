@@ -1,6 +1,19 @@
 const baseUrl = 'http://localhost:8080/notes';
 const form = document.querySelector('#noteForm');
+const filter = document.querySelector('#filter');
+const filters = document.querySelectorAll('.filter');
 const display = document.querySelector('#notes');
+let notes = null;
+let tags = [];
+
+window.addEventListener('load', event => {
+  getNotes(baseUrl)
+    .then(res => {
+      notes = res;
+      const table = createNoteTable(res);
+      display.innerHTML = table;
+    });
+});
 
 form.addEventListener('submit', event => {
   event.preventDefault();
@@ -11,21 +24,65 @@ form.addEventListener('submit', event => {
 
   postNotes(baseUrl, data)
     .then(res => {
-      const table = createNoteTable(res);
-      console.log(table);
+      notes = res;
+      const sortedNotes = filterNotesByTags(tags, res);
+      const table = createNoteTable(sortedNotes);
       display.innerHTML = table;
+      form.reset();
+      initiateFilter(filters);
     });
-
 });
 
+filter.addEventListener('click', (event) => {
+  if (event.target.classList.contains('filter')) {
+    if (event.target.checked) {
+      tags.push(event.target.value);
+    } else {
+      tags = tags.filter(tag => tag !== event.target.value);
+    }
+    const sortedNotes = filterNotesByTags(tags, notes);
+    const table = createNoteTable(sortedNotes);
+    display.innerHTML = table;
+  }
+});
+
+display.addEventListener('click', (event) => {
+  if (event.target.classList.contains('btn-delete')) {
+    const id = event.target.id;
+    deleteNotes(baseUrl, id)
+      .then(res => {
+        notes = res;
+        const sortedNotes = filterNotesByTags(tags, res);
+        const table = createNoteTable(sortedNotes);
+        display.innerHTML = table;
+      })
+  }
+});
+
+
+function initiateFilter(filters) {
+  filters.forEach(filter => filter.checked = false);
+}
+
+function filterNotesByTags(tags, notes) {
+  if (!tags.length) return notes;
+  notes.filter(note => {
+    if (!note.tags.length || tags.length === note.tags.length) return false;
+    const sortedNoteTags = note.tags.sort((a,b) => a < b);
+    const sortedTags = tags.sort((a,b) => a < b);
+    return sortedTags.every((value, index) => value === sortedNoteTags[index]);
+  })
+}
+
 function createNoteTable(notes) {
-  const tableRows = notes.map((note, index) => {
+  const tableRows = notes.reverse().map((note, index) => {
     return `
-      <tr>
-        <td>${index+1}</td>
+      <tr class="note" >
+        <td>${notes.length - index}</td>
         <td>${note.title}</td>
         <td>${note.content}</td>
         <td>${note.tags.map(tag => `<span class="badge badge-info">${tag}</span>`).join(' ')}</td>
+        <td><button type="button" id=${note.id} class="btn btn-outline-danger btn-delete">Delete</button></td>
       <tr>`;
   }).join('');
   return `
@@ -36,6 +93,7 @@ function createNoteTable(notes) {
           <th>Title</th>
           <th>Content</th>
           <th>Tags</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -53,8 +111,15 @@ function postNotes(url, data) {
   .then(response => response.json());
 }
 
-function getNotes(url) {
+function deleteNotes(url, id) {
+  return fetch(`${url}/${id}`, {
+    method: 'DELETE'
+  })
+  .then(response => response.json());
+}
 
+function getNotes(url) {
+  return fetch(url).then(response => response.json());
 }
 
 function getCheckedTags(tags) {

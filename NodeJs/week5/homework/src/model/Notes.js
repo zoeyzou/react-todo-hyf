@@ -21,7 +21,8 @@ class Notes {
   }
 
   writeNotesToDB(notes) {
-    return writeFile(this.path, JSON.stringify(this._notes))
+    const notesString = JSON.stringify(notes);
+    return writeFile(this.path, notesString);
   }
 
   // async getNotes() {
@@ -41,7 +42,7 @@ class Notes {
   // }
   postNotes(addedNotes) {
     this._notes = this._notes.concat(addedNotes);
-    this.writeNotesToDB(this.path, JSON.stringify(this._notes));
+    this.writeNotesToDB(this._notes);
     return this._notes;
   }
 
@@ -54,13 +55,14 @@ class Notes {
   // }
   editNotes(id, content) {
     this._notes[id] = {...this._notes[id], ...content};
-    this.writeNotesToDB(this.path, JSON.stringify(this._notes));
+    this.writeNotesToDB(this._notes);
     return this._notes;
   }
 
   deleteNotes(id) {
-    this._notes.splice(id, 1);
-    this.writeNotesToDB(this.path, JSON.stringify(this._notes));
+    const index = this._notes.findIndex(note => note.id === id);
+    this._notes.splice(index, 1);
+    this.writeNotesToDB(this._notes);
     return this._notes;
   }
 }

@@ -1,5 +1,6 @@
 class Note {
   constructor(title, content, tags) {
+    this.id = null;
     this.title = title;
     this.content = content;
     this.tags = [].concat(tags);
@@ -18,6 +19,7 @@ class Note {
 
   toJSON() {
     return {
+      id: this.id,
       title: this.title,
       content: this.content,
       tags: this.tags

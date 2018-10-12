@@ -37,3 +37,9 @@ INSERT INTO students (id, name, email, phone, class_id) VALUES (7, 'Pavel Brushn
 INSERT INTO students (id, name, email, phone, class_id) VALUES (8, 'Hedy Gerault', 'hgerault7@nymag.com', '176-177-5579', 1);
 INSERT INTO students (id, name, email, phone, class_id) VALUES (9, '王秀英', 'wang.xiuying@weebly.com', '891-952-6749', 2);
 INSERT INTO students (id, name, email, phone, class_id) VALUES (10, 'إلياس', 'elias@github.com', '202-517-6983', 3);
+
+ALTER TABLE students
+ADD INDEX (name);
+
+ALTER TABLE class
+ADD COLUMN status ENUM ('not-started', 'ongoing', 'finished');

@@ -6,6 +6,7 @@
   Submit an image or PDF of your entity relationship diagram, and a `.sql` file with the `CREATE TABLE` statements.
 
 ## Solution
-  The idea is to build a boardgame dashboard. The `boardgames` table have all the information about games, including names, player numbers, recommended ages, authors, available shops. Among the columns, `authors`, `categories` and `shops` are the other 3 tables that has one to many relationship with table `boardgames`. In this case, the `primary key` of `boardgames` is `id`, and `foreign key` are `author_id`, `category_id` and `shop_id`. 3 extra tables represents many to many relationship.
+  The idea is to build a boardgame dashboard. The `boardgames` table have all the information about games, including names, player numbers, recommended ages, authors, available shops. Among the columns, `authors`, `categories` and `shops` are the other 3 tables that has one to one relationship with table `boardgames`. In this case, the `primary key` of `boardgames` is `id`, and `foreign key` are `author_id`, `category_id` and `shop_id`. 3 extra tables represents many to many relationship.
 
-  
+  <!-- ![database diagram](https://github.com/zoeyzou/hyf-homework/blob/master/Database/week3/homework/boardgame_db.png "database diagram") -->
+

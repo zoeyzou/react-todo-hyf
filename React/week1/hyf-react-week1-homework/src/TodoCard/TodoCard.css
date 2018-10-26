@@ -1,0 +1,22 @@
+.TodoCard {
+  display: flex;
+  flex-flow: column;
+  position: relative;
+  height: 100%;
+  padding: 5px;
+}
+
+.date {
+  text-align: right;
+  font-size: 12px;
+  padding-right: 10px;
+}
+
+.todo {
+  font-size: 23px;
+}
+
+.comment {
+  font-size: 12px;
+  justify-self: flex-end;
+}

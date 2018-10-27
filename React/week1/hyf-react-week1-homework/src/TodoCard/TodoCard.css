@@ -1,9 +1,24 @@
+@import url('../SharedStyle.css');
+
 .TodoCard {
   display: flex;
   flex-flow: column;
   position: relative;
   height: 100%;
   padding: 5px;
+  background: var(--light-white);
+  color: var(--charcoal);
+  transition: color .2s ease-in;
+}
+
+.TodoCard:hover {
+  cursor: pointer;
+  color: var(--light-grey);
+}
+
+.TodoCard.isComplete {
+  color: var(--light-grey);
+  text-decoration: line-through;
 }
 
 .date {

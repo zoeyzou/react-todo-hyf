@@ -8,24 +8,44 @@ type TodoCardProps = {
   comment?: string;
 };
 
-const TodoCard: React.SFC<TodoCardProps> = props => {
-  return (
-    <FlexCard>
-      <div className="TodoCard">
-        <div className="date">
-          <p>{props.date}</p>
-        </div>
-        <div className="todo">
-          <p>{props.todo}</p>
-        </div>
-        {props.comment && (
-          <div className="comment">
-            <p>{props.comment}</p>
-          </div>
-        )}
-      </div>
-    </FlexCard>
-  );
+type TodoCardState = {
+  isComplete: boolean;
 };
+
+class TodoCard extends React.Component<TodoCardProps, TodoCardState> {
+  public state = {
+    isComplete: false
+  };
+
+  public onCardClick = () => {
+    console.log('clikced');
+    this.setState(prevState => ({ isComplete: !prevState.isComplete }));
+  };
+
+  public render() {
+    const { date, todo, comment } = this.props;
+    const { isComplete } = this.state;
+    return (
+      <FlexCard>
+        <div
+          className={`TodoCard ${isComplete ? 'isComplete' : ''}`}
+          onClick={this.onCardClick}
+        >
+          <div className="date">
+            <p>{date}</p>
+          </div>
+          <div className="todo">
+            <p>{todo}</p>
+          </div>
+          {comment && (
+            <div className="comment">
+              <p>{comment}</p>
+            </div>
+          )}
+        </div>
+      </FlexCard>
+    );
+  }
+}
 
 export default TodoCard;

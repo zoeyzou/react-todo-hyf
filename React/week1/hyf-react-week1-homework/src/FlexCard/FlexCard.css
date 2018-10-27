@@ -2,11 +2,8 @@
 
 .FlexCard {
   font-family: var(--font-secondary);
-  max-width: 350px;
   min-height: 200px;
   flex: 1 1 300px;
   margin: 10px;
-  background: var(--light-white);
-  color: var(--charcoal);
   box-shadow: var(--box-shadow-color);
 }

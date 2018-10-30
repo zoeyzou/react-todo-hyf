@@ -5,19 +5,27 @@ type StandardInputProps = {
   buttonLabel: string;
   initialValue: string;
   inputHandler: (e: React.SyntheticEvent<HTMLInputElement>) => void;
-  clickHandler: () => void;
+  clickHandler: (e: React.FormEvent) => void;
+  disableButton: boolean;
 };
 
 const StandardInput: React.SFC<StandardInputProps> = props => {
+  console.log('disabled', props.disableButton);
   return (
-    <div className="StandardInput">
+    <form className="StandardInput">
       <input
         type="text"
         value={props.initialValue}
         onChange={props.inputHandler}
       />
-      <button onClick={props.clickHandler}>{props.buttonLabel}</button>
-    </div>
+      <button
+        type="submit"
+        disabled={props.disableButton}
+        onClick={props.clickHandler}
+      >
+        {props.buttonLabel}
+      </button>
+    </form>
   );
 };
 

@@ -1,10 +1,3 @@
-// type Todo = {
-//   date: string;
-//   todo: string;
-//   isComplete: boolean;
-//   comment?: string;
-// }
-
 export class Todo {
   constructor(
     public id: number,

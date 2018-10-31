@@ -1,0 +1,39 @@
+@import url('../SharedStyle.css');
+
+.StandardInput input {
+  font-family: var(--font-secondary);
+  text-transform: capitalize;
+  height: 25px;
+  width: 25%;
+  min-width: 250px;
+  padding: 5px 10px;
+  margin-right: 10px;
+  border-radius: 5px;
+  border: 1px solid var(--purple);
+  box-shadow: var(--box-shadow-color);
+}
+
+.StandardInput button {
+  font-family: var(--font-main);
+  height: 37px;
+  padding: 5px 10px;
+  color: var(--light-white);
+  background: var(--purple);
+  text-transform: uppercase;
+  border-radius: 5px;
+  border: 1px solid darkgray;
+  box-shadow: var(--box-shadow-color);
+  transition: all .2s linear;
+  cursor: pointer;
+}
+
+.StandardInput button:hover {
+  color: var(--purple);
+  background: var(--light-white);
+}
+
+.StandardInput button:disabled {
+  background: darkgray;
+  color: lightgray;
+  cursor: not-allowed;
+}

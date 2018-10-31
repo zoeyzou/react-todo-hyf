@@ -3,7 +3,7 @@
 .FullWidthTitle {
   width: 100%;
   height: 100%;
-  padding: 100px 0;
+  padding: 60px 0;
   font-family: var(--font-main);
 }
 
@@ -16,8 +16,8 @@
   font-size: 20px;
 }
 
-.lightGray {
-  background-color: var(--light-grey);
+.gray {
+  background-color: var(--charcoal);
   color: var(--light-white);
-  box-shadow: 0 3px 6px var(--light-grey);
+  box-shadow: 0 3px 4px var(--charcoal);
 }

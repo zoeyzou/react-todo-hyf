@@ -1,2 +1,0 @@
-This is the second file.
-我是中文。

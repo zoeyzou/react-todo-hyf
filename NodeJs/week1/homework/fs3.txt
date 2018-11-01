@@ -1,3 +1,0 @@
-Most fs operations accept filepaths that may be specified in the form of a string, a Buffer, or a URL object using the file: protocol.
-
-String form paths are interpreted as UTF-8 character sequences identifying the absolute or relative filename. Relative paths will be resolved relative to the current working directory as specified by process.cwd().

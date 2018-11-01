@@ -1,2 +1,0 @@
-This is the first file.
-如果这是中文的话会发生什么事呢？

@@ -1,1 +1,0 @@
-{"version":3,"sources":["../src/Beverages.js"],"names":["Beverage","constructor","name"],"mappings":";;AAAA,MAAMA,QAAN,CAAe;AACXC,gBAAaC,IAAb,EAAoB,CAEnB;AAHU","file":"Beverages.js","sourcesContent":["class Beverage {\r\n    constructor (name, ){\r\n\r\n    }\r\n}"]}
